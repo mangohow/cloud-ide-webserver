@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "./;pb";
+
+
+message ResourceLimit {
+  string cpu = 1;
+  string Memory = 2;
+  string Storage = 3;
+}
+
+message PodInfo {
+  string name = 1;
+  string namespace = 2;
+  string image = 3;
+  uint32 port = 4;
+  ResourceLimit resourceLimit = 5;
+}
+
+message Response {
+  int32 status = 1;
+  string message = 2;
+}
+
+message QueryOption {
+  string name = 1;
+  string namespace = 2;
+}
+
+message PodStatus {
+  int32 status = 1;
+  string message = 2;
+}
+
+message PodSpaceInfo {
+  string nodeName = 1;
+  string ip = 2;
+  int32 port = 3;
+}
+
+service CloudIdeService {
+  // 创建云IDE空间并等待Pod状态变为Running
+  rpc createSpaceAndWaitForRunning(PodInfo) returns (PodSpaceInfo);
+  // 删除云IDE空间
+  rpc deleteSpace(QueryOption) returns (Response);
+  // 获取Pod运行状态
+  rpc getPodSpaceStatus(QueryOption) returns (PodStatus);
+  // 获取云IDE空间Pod的信息
+  rpc getPodSpaceInfo(QueryOption) returns (PodSpaceInfo);
+}

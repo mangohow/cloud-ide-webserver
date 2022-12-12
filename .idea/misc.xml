@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="UnattendedHostPersistenceState">
+    <option name="openedFilesInfos">
+      <list>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="736" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/cmd/server/main.go" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="2685" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/internal/controller/cloudcodecontroller.go" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="2182" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/internal/service/cloudcodeservice.go" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="638" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/internal/service/spaceservice.go" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="581" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/internal/caches/spacespeccache.go" />
+        </OpenedFileInfo>
+      </list>
+    </option>
+  </component>
+</project>

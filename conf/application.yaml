@@ -1,0 +1,24 @@
+server:
+  host: "0.0.0.0"
+  port: 8088
+  name: "unknown"
+  mode: "Dev"
+
+mysql:
+  dataSourceName: "root:mgh99999@(192.168.44.100:3306)/cloudcode?charset=utf8mb4&parseTime=true&loc=Local"
+  maxOpenConns: 20
+  maxIdleConns: 10
+
+logger:
+  level: "DEBUG"
+  filePath: "./log_file"
+  fileName: "log.log"
+  maxFileSize: 1073741824
+  toFile: false
+
+redis:
+  addr: "192.168.44.100:30863"
+  poolSize: 10
+  minIdleConns: 5
+  password: ""
+  db: 0
