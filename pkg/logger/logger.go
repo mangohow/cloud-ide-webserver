@@ -14,6 +14,7 @@ import (
 var TimeFormat = "2006-01-02 15:04:05"
 
 var logger *logrus.Logger
+var out io.Writer
 
 func Logger() *logrus.Logger {
 	return logger
@@ -23,6 +24,7 @@ func InitLogger() error {
 	logger = logrus.New()
 	logger.SetFormatter(&LogFormatter{})
 	logger.SetOutput(os.Stdout)
+	out = os.Stdout
 	logger.SetLevel(logrus.DebugLevel)
 	logger.SetReportCaller(true)
 
@@ -32,9 +34,14 @@ func InitLogger() error {
 			return err
 		}
 		logger.SetOutput(w)
+		out = w
 	}
 
 	return nil
+}
+
+func Output() io.Writer {
+	return out
 }
 
 func OpenLogFile(filePath, fileName string) (io.Writer, error) {

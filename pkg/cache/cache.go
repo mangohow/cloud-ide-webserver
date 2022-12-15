@@ -42,15 +42,15 @@ func (c *Cache) GetByInt(key int) (interface{}, bool) {
 	return c.Get(strconv.Itoa(key))
 }
 
-func (c *Cache) GetAll() map[string]interface{} {
+func (c *Cache) GetAll() []interface{} {
 	c.lock.RLock()
 	c.lock.RUnlock()
-	m := make(map[string]interface{}, len(c.items))
-	for k, v := range c.items {
-		m[k] = v
+	ret := make([]interface{}, 0, len(c.items))
+	for _, v := range c.items {
+		ret = append(ret, v)
 	}
 
-	return m
+	return ret
 }
 
 func (c *Cache) Replace(items map[string]interface{}) {

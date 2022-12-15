@@ -26,18 +26,21 @@ func NewCloudCodeController() *CloudCodeController {
 	}
 }
 
-// CreateSpace 创建一个云空间
+// CreateSpace 创建一个云空间  method: POST path: /api/space
 // Request Param: reqtype.SpaceCreateOption
 func (c *CloudCodeController) CreateSpace(ctx *gin.Context) *serialize.Response {
+	// 1、用户参数获取和验证
 	req := c.creationCheck(ctx)
 	if req == nil {
 		ctx.Status(http.StatusBadRequest)
 		return nil
 	}
 
+	// 2、获取用户id，在token验证时已经解析出并放入ctx中了
 	idi, _ := ctx.Get("id")
 	id := idi.(uint32)
 
+	// 3、调用service处理然后响应结果
 	space, err := c.spaceService.CreateWorkspace(req, id)
 	switch err {
 	case service.ErrNameDuplicate:
@@ -62,6 +65,7 @@ func (c *CloudCodeController) CreateSpace(ctx *gin.Context) *serialize.Response 
 func (c *CloudCodeController) creationCheck(ctx *gin.Context) *reqtype.SpaceCreateOption {
 	// 获取用户请求参数
 	var req reqtype.SpaceCreateOption
+	// 绑定数据
 	err := ctx.ShouldBind(&req)
 	if err != nil {
 		return nil
@@ -83,7 +87,7 @@ func (c *CloudCodeController) creationCheck(ctx *gin.Context) *reqtype.SpaceCrea
 	return &req
 }
 
-// CreateSpaceAndStart 创建一个新的云空间并启动
+// CreateSpaceAndStart 创建一个新的云空间并启动 method: POST path: /api/space_cas
 // Request Param: reqtype.SpaceCreateOption
 func (c *CloudCodeController) CreateSpaceAndStart(ctx *gin.Context) *serialize.Response {
 	req := c.creationCheck(ctx)
@@ -128,11 +132,10 @@ func (c *CloudCodeController) StartSpace(ctx *gin.Context) *serialize.Response {
 	panic("TODO")
 }
 
-// StopSpace 停止正在运行的云空间
-// Request Param: id sid
+// StopSpace 停止正在运行的云空间 method: PUT path: /api/space_stop
+// Request Param: sid
 func (c *CloudCodeController) StopSpace(ctx *gin.Context) *serialize.Response {
 	var req struct{
-		Id uint32 `json:"id"`
 		Sid string `json:"sid"`
 	}
 	err := ctx.ShouldBind(&req)
@@ -148,7 +151,7 @@ func (c *CloudCodeController) StopSpace(ctx *gin.Context) *serialize.Response {
 	}
 
 	uid := uidi.(string)
-	err = c.spaceService.StopWorkspace(req.Id, req.Sid, uid)
+	err = c.spaceService.StopWorkspace(req.Sid, uid)
 	if err != nil {
 		if err == service.ErrWorkSpaceIsNotRunning {
 			return serialize.NewResponseOKND(code.SpaceStopIsNotRunning)
@@ -160,7 +163,7 @@ func (c *CloudCodeController) StopSpace(ctx *gin.Context) *serialize.Response {
 	return serialize.NewResponseOKND(code.SpaceStopSuccess)
 }
 
-// DeleteSpace 删除已存在的云空间
+// DeleteSpace 删除已存在的云空间  method: DELETE path: /api/delete
 // Request Param: id
 func (c *CloudCodeController) DeleteSpace(ctx *gin.Context) *serialize.Response {
 	id, err := utils.QueryUint32(ctx, "id")
@@ -183,7 +186,7 @@ func (c *CloudCodeController) DeleteSpace(ctx *gin.Context) *serialize.Response 
 	return serialize.NewResponseOKND(code.SpaceDeleteSuccess)
 }
 
-// ListSpace 获取所有创建的云空间
+// ListSpace 获取所有创建的云空间 method: GET path: /api/spaces
 // Request param: id uid
 func (c *CloudCodeController) ListSpace(ctx *gin.Context) *serialize.Response {
 	v1, e1 := ctx.Get("id")

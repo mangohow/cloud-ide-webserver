@@ -34,7 +34,7 @@ type CloudCodeService struct {
 
 func NewCloudCodeService() *CloudCodeService {
 	conn := rpc.GrpcClient("space-code")
-	factory := caches.NewCacheFactory()
+	factory := caches.CacheFactory()
 	d := dao.NewSpaceTemplateDao()
 	return &CloudCodeService{
 		logger:    logger.Logger(),
@@ -114,7 +114,6 @@ func (c *CloudCodeService) CreateWorkspace(req *reqtype.SpaceCreateOption, userI
 // CreateAndStartWorkspace 创建并且启动云工作空间
 func (c *CloudCodeService) CreateAndStartWorkspace(req *reqtype.SpaceCreateOption, userId uint32, uid string) (*model.Space, error) {
 	// TODO 检查是否有工作空间正在运行, 需要停止
-	// TODO 修改controller中运行时的Pod名称，不能根据用户指定的工作空间名称来生成Pod名称，因为Pod名称中不能含有'_'等字符
 
 	// 1、创建工作空间
 	space, err := c.CreateWorkspace(req, userId)
@@ -145,7 +144,10 @@ func (c *CloudCodeService) CreateAndStartWorkspace(req *reqtype.SpaceCreateOptio
 	}
 
 	// 5、请求k8s controller创建云空间
-	spaceInfo, err := c.rpc.CreateSpaceAndWaitForRunning(context.Background(), &pod)
+	// 设置一分钟的超时时间
+	timeout, cancelFunc := context.WithTimeout(context.Background(), time.Minute)
+	defer cancelFunc()
+	spaceInfo, err := c.rpc.CreateSpaceAndWaitForRunning(timeout, &pod)
 	if err != nil {
 		c.logger.Warnf("rpc create space and wait error:%v", err)
 		return nil, ErrSpaceStart
@@ -197,9 +199,9 @@ func (c *CloudCodeService) DeleteWorkspace(id uint32) error {
 }
 
 // StopWorkspace 停止云工作空间
-func (c *CloudCodeService) StopWorkspace(id uint32, sid, uid string) error {
-	// 1、查询云工作空间是否正在运行
-	isRunning, err := rdis.CheckIsRunning(sid)
+func (c *CloudCodeService) StopWorkspace(sid, uid string) error {
+	// 1、查询云工作空间是否正在运行并删除数据
+	isRunning, err := rdis.CheckRunningSpaceAndDelete(uid)
 	if err != nil {
 		c.logger.Warnf("check is running error:%v", err)
 		return err

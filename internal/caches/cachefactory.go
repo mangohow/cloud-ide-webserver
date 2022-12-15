@@ -6,16 +6,21 @@ import (
 	"sync"
 )
 
-type CacheFactory struct {
+type cacheFactory struct {
 	caches map[reflect.Type]interface{}
 	lock   sync.Mutex
 }
 
-func NewCacheFactory() *CacheFactory {
-	return &CacheFactory{caches: make(map[reflect.Type]interface{})}
+var (
+	factory = &cacheFactory{caches: make(map[reflect.Type]interface{})}
+)
+
+
+func CacheFactory() *cacheFactory {
+	return factory
 }
 
-func (f *CacheFactory) TmplCache(dao *dao.SpaceTemplateDao) *TmplCache {
+func (f *cacheFactory) TmplCache(dao *dao.SpaceTemplateDao) *TmplCache {
 	t := reflect.TypeOf(&TmplCache{})
 	f.lock.Lock()
 	defer f.lock.Unlock()
@@ -31,7 +36,7 @@ func (f *CacheFactory) TmplCache(dao *dao.SpaceTemplateDao) *TmplCache {
 	return cache
 }
 
-func (f *CacheFactory) SpecCache(dao *dao.SpaceTemplateDao) *SpecCache {
+func (f *cacheFactory) SpecCache(dao *dao.SpaceTemplateDao) *SpecCache {
 	t := reflect.TypeOf(&SpecCache{})
 	f.lock.Lock()
 	defer f.lock.Unlock()

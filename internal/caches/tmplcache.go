@@ -5,7 +5,6 @@ import (
 	"github.com/mangohow/cloud-ide-webserver/internal/model"
 	"github.com/mangohow/cloud-ide-webserver/pkg/cache"
 	"strconv"
-	"sync"
 )
 
 // 加载mysql中的SpaceTemplate到内存中，数据量不大
@@ -13,7 +12,6 @@ import (
 type TmplCache struct {
 	cache *cache.Cache
 	dao   *dao.SpaceTemplateDao
-	once  sync.Once
 }
 
 func newTmplCache(dao *dao.SpaceTemplateDao) *TmplCache {
@@ -45,4 +43,18 @@ func (t *TmplCache) Get(key uint32) *model.SpaceTemplate {
 	tp := item.(*model.SpaceTemplate)
 	tmpl := *tp
 	return &tmpl
+}
+
+func (t *TmplCache) GetAll() []*model.SpaceTemplate {
+	// 返回的slice都是指针
+	all := t.cache.GetAll()
+	// 拷贝一份
+	items := make([]*model.SpaceTemplate, len(all))
+	for i := 0; i < len(all); i++ {
+		item := all[i].(*model.SpaceTemplate)
+		t := *item
+		items[i] = &t
+	}
+
+	return items
 }

@@ -21,6 +21,7 @@ func NewSpaceTmplController() *SpaceTmplController {
 	}
 }
 
+// SpaceTmpls 获取所有模板 method: GET path:/api/tmpls
 func (s *SpaceTmplController) SpaceTmpls(ctx *gin.Context) *serialize.Response {
 	tmpls, err := s.service.GetAllUsingTmpl()
 	if err != nil {

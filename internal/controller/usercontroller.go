@@ -21,6 +21,7 @@ func NewUserController() *UserController {
 	}
 }
 
+// Login method: POST path: /login
 func (u *UserController) Login(ctx *gin.Context) *serialize.Response {
 	username := ctx.PostForm("username")
 	password := ctx.PostForm("password")

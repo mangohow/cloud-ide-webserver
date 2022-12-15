@@ -48,6 +48,30 @@ func GetRunningSpace(uid string) (*model.RunningSpace, error) {
 	return &space, nil
 }
 
+func CheckRunningSpaceAndDelete(uid string) (bool, error) {
+	res := client.HGet(context.Background(), HostsHashKey, uid)
+	if err := res.Err(); err != nil {
+		if err == redis.Nil {
+			return false, nil
+		}
+	}
+	if res.Val() == "" {
+		return false, nil
+	}
+
+	space := &model.RunningSpace{}
+	err := json.Unmarshal(utils.String2Bytes(res.Val()), space)
+	if err != nil {
+		return true, err
+	}
+	sid := space.Sid
+	if err = client.HDel(context.Background(), HostsHashKey, uid, sid).Err(); err != nil {
+		return true, err
+	}
+
+	return true, nil
+}
+
 func CheckIsRunning(sid string) (bool, error) {
 	res := client.HGet(context.Background(), HostsHashKey, sid)
 	if err := res.Err(); err != nil {
