@@ -5,16 +5,20 @@ import (
 	"github.com/mangohow/cloud-ide-webserver/internal/dao"
 	"github.com/mangohow/cloud-ide-webserver/internal/model"
 	"github.com/mangohow/cloud-ide-webserver/pkg/code"
+	"github.com/mangohow/cloud-ide-webserver/pkg/logger"
 	"github.com/mangohow/cloud-ide-webserver/pkg/utils/encrypt"
+	"github.com/sirupsen/logrus"
 )
 
 type UserService struct {
-	dao *dao.UserDao
+	logger *logrus.Logger
+	dao    *dao.UserDao
 }
 
 func NewUserService() *UserService {
 	return &UserService{
-		dao: dao.NewUserDao(),
+		logger: logger.Logger(),
+		dao:    dao.NewUserDao(),
 	}
 }
 
@@ -40,4 +44,14 @@ func (u *UserService) Login(username, password string) (*model.User, error) {
 	user.Token = token
 
 	return user, nil
+}
+
+func (u *UserService) CheckUsernameAvailable(username string) bool {
+	err := u.dao.FindByUsername(username)
+	// 如果能查询到记录， err == nil
+	if err != nil {
+		return false
+	}
+
+	return true
 }

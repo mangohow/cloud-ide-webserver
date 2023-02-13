@@ -7,6 +7,7 @@ import (
 	"github.com/mangohow/cloud-ide-webserver/pkg/logger"
 	"github.com/mangohow/cloud-ide-webserver/pkg/serialize"
 	"github.com/sirupsen/logrus"
+	"net/http"
 )
 
 type UserController struct {
@@ -41,4 +42,26 @@ func (u *UserController) Login(ctx *gin.Context) *serialize.Response {
 	}
 
 	return serialize.NewResponseOk(code.LoginSuccess, user)
+}
+
+// Register 用户注册 method: POST path: /register
+func (u *UserController) Register(ctx *gin.Context) *serialize.Response {
+
+	return serialize.NewResponseOKND(0)
+}
+
+// CheckUsernameAvailable 检测用户名是否可用 method: GET path: /uaval
+func (u *UserController) CheckUsernameAvailable(ctx *gin.Context) *serialize.Response {
+	value := ctx.Query("username")
+	if value == "" {
+		ctx.Status(http.StatusBadRequest)
+		return nil
+	}
+
+	ok := u.service.CheckUsernameAvailable(value)
+	if !ok {
+		return serialize.NewResponseOKND(code.UserNameAvailable)
+	}
+
+	return serialize.NewResponseOKND(code.UserNameUnavailable)
 }

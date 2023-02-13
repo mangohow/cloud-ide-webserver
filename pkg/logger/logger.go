@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-var TimeFormat = "2006-01-02 15:04:05"
+const TimeFormat = "2006-01-02 15:04:05"
 
 var logger *logrus.Logger
 var out io.Writer
@@ -88,7 +88,7 @@ func (t *LogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 func findFuncName(name string) string {
 	for i := len(name) - 1; i >= 0; i-- {
 		if name[i] == '.' {
-			return name[i + 1:]
+			return name[i+1:]
 		}
 	}
 	return ""

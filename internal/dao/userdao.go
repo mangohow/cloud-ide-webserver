@@ -22,3 +22,9 @@ func (u *UserDao) FindByUsernameAndPassword(username, password string) (user *mo
 	err := u.db.Get(user, sql, username, password)
 	return user, err
 }
+
+func (u *UserDao) FindByUsername(username string) error {
+	sql := "SELECT 1 FROM t_user WHERE username = ?"
+	var n int
+	return u.db.Get(&n, sql, username)
+}

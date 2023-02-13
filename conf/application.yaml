@@ -5,7 +5,7 @@ server:
   mode: "Dev"
 
 mysql:
-  dataSourceName: "root:root123456@(192.168.44.100:3306)/cloudcode?charset=utf8mb4&parseTime=true&loc=Local"
+  dataSourceName: "root:root123456@(192.168.186.100:3306)/cloudcode?charset=utf8mb4&parseTime=true&loc=Local"
   maxOpenConns: 20
   maxIdleConns: 10
 
@@ -17,8 +17,11 @@ logger:
   toFile: false
 
 redis:
-  addr: "192.168.44.100:30863"
+  addr: "192.168.186.100:6379"
   poolSize: 10
   minIdleConns: 5
   password: ""
   db: 0
+
+grpc:
+  addr: "192.168.186.100:6387"

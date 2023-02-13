@@ -23,6 +23,9 @@ const (
 	SpaceStopSuccess
 	SpaceStopFailed
 	SpaceStopIsNotRunning
+
+	UserNameAvailable
+	UserNameUnavailable
 )
 
 type UserStatus uint32
@@ -50,6 +53,8 @@ var messageForCode = map[uint32]string{
 	SpaceStopSuccess:         "停止工作空间成功",
 	SpaceStopFailed:          "停止工作空间失败",
 	SpaceStopIsNotRunning:    "工作空间未运行",
+	UserNameAvailable:        "用户名可用",
+	UserNameUnavailable:      "用户名不可用",
 }
 
 func GetMessage(code uint32) string {

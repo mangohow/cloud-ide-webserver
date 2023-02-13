@@ -2,6 +2,7 @@ package rpc
 
 import (
 	"context"
+	"github.com/mangohow/cloud-ide-webserver/conf"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"sync"
@@ -29,7 +30,7 @@ func GrpcClient(name string) *grpc.ClientConn {
 func newClient() *grpc.ClientConn {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
-	conn, err := grpc.DialContext(ctx, "192.168.44.100:6387", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.DialContext(ctx, conf.GrpcConfig.Addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)
 	}
