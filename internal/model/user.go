@@ -17,3 +17,11 @@ type User struct {
 
 	Token string `json:"token"`
 }
+
+type RegisterInfo struct {
+	Nickname  string `json:"nickname"`
+	Username  string `json:"username"`
+	Password  string `json:"password"`
+	Email     string `json:"email"`
+	EmailCode string `json:"emailCode"`
+}

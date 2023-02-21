@@ -431,22 +431,27 @@ var file_pb_proto_service_proto_rawDesc = []byte{
 	0x28, 0x09, 0x52, 0x08, 0x6e, 0x6f, 0x64, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x0e, 0x0a, 0x02,
 	0x69, 0x70, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x70, 0x12, 0x12, 0x0a, 0x04,
 	0x70, 0x6f, 0x72, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x05, 0x52, 0x04, 0x70, 0x6f, 0x72, 0x74,
-	0x32, 0xe9, 0x01, 0x0a, 0x0f, 0x43, 0x6c, 0x6f, 0x75, 0x64, 0x49, 0x64, 0x65, 0x53, 0x65, 0x72,
-	0x76, 0x69, 0x63, 0x65, 0x12, 0x3d, 0x0a, 0x1c, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x53, 0x70,
-	0x61, 0x63, 0x65, 0x41, 0x6e, 0x64, 0x57, 0x61, 0x69, 0x74, 0x46, 0x6f, 0x72, 0x52, 0x75, 0x6e,
-	0x6e, 0x69, 0x6e, 0x67, 0x12, 0x0b, 0x2e, 0x70, 0x62, 0x2e, 0x50, 0x6f, 0x64, 0x49, 0x6e, 0x66,
-	0x6f, 0x1a, 0x10, 0x2e, 0x70, 0x62, 0x2e, 0x50, 0x6f, 0x64, 0x53, 0x70, 0x61, 0x63, 0x65, 0x49,
-	0x6e, 0x66, 0x6f, 0x12, 0x2c, 0x0a, 0x0b, 0x64, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x53, 0x70, 0x61,
-	0x63, 0x65, 0x12, 0x0f, 0x2e, 0x70, 0x62, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x4f, 0x70, 0x74,
-	0x69, 0x6f, 0x6e, 0x1a, 0x0c, 0x2e, 0x70, 0x62, 0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x12, 0x33, 0x0a, 0x11, 0x67, 0x65, 0x74, 0x50, 0x6f, 0x64, 0x53, 0x70, 0x61, 0x63, 0x65,
-	0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x0f, 0x2e, 0x70, 0x62, 0x2e, 0x51, 0x75, 0x65, 0x72,
-	0x79, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x1a, 0x0d, 0x2e, 0x70, 0x62, 0x2e, 0x50, 0x6f, 0x64,
-	0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x34, 0x0a, 0x0f, 0x67, 0x65, 0x74, 0x50, 0x6f, 0x64,
-	0x53, 0x70, 0x61, 0x63, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x0f, 0x2e, 0x70, 0x62, 0x2e, 0x51,
-	0x75, 0x65, 0x72, 0x79, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x1a, 0x10, 0x2e, 0x70, 0x62, 0x2e,
-	0x50, 0x6f, 0x64, 0x53, 0x70, 0x61, 0x63, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x42, 0x07, 0x5a, 0x05,
-	0x2e, 0x2f, 0x3b, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x32, 0xb1, 0x02, 0x0a, 0x0f, 0x43, 0x6c, 0x6f, 0x75, 0x64, 0x49, 0x64, 0x65, 0x53, 0x65, 0x72,
+	0x76, 0x69, 0x63, 0x65, 0x12, 0x2c, 0x0a, 0x0b, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x53, 0x70,
+	0x61, 0x63, 0x65, 0x12, 0x0b, 0x2e, 0x70, 0x62, 0x2e, 0x50, 0x6f, 0x64, 0x49, 0x6e, 0x66, 0x6f,
+	0x1a, 0x10, 0x2e, 0x70, 0x62, 0x2e, 0x50, 0x6f, 0x64, 0x53, 0x70, 0x61, 0x63, 0x65, 0x49, 0x6e,
+	0x66, 0x6f, 0x12, 0x2b, 0x0a, 0x0a, 0x73, 0x74, 0x61, 0x72, 0x74, 0x53, 0x70, 0x61, 0x63, 0x65,
+	0x12, 0x0b, 0x2e, 0x70, 0x62, 0x2e, 0x50, 0x6f, 0x64, 0x49, 0x6e, 0x66, 0x6f, 0x1a, 0x10, 0x2e,
+	0x70, 0x62, 0x2e, 0x50, 0x6f, 0x64, 0x53, 0x70, 0x61, 0x63, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x12,
+	0x2c, 0x0a, 0x0b, 0x64, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x53, 0x70, 0x61, 0x63, 0x65, 0x12, 0x0f,
+	0x2e, 0x70, 0x62, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x1a,
+	0x0c, 0x2e, 0x70, 0x62, 0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x2a, 0x0a,
+	0x09, 0x73, 0x74, 0x6f, 0x70, 0x53, 0x70, 0x61, 0x63, 0x65, 0x12, 0x0f, 0x2e, 0x70, 0x62, 0x2e,
+	0x51, 0x75, 0x65, 0x72, 0x79, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x1a, 0x0c, 0x2e, 0x70, 0x62,
+	0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x33, 0x0a, 0x11, 0x67, 0x65, 0x74,
+	0x50, 0x6f, 0x64, 0x53, 0x70, 0x61, 0x63, 0x65, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x0f,
+	0x2e, 0x70, 0x62, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x1a,
+	0x0d, 0x2e, 0x70, 0x62, 0x2e, 0x50, 0x6f, 0x64, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x34,
+	0x0a, 0x0f, 0x67, 0x65, 0x74, 0x50, 0x6f, 0x64, 0x53, 0x70, 0x61, 0x63, 0x65, 0x49, 0x6e, 0x66,
+	0x6f, 0x12, 0x0f, 0x2e, 0x70, 0x62, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x4f, 0x70, 0x74, 0x69,
+	0x6f, 0x6e, 0x1a, 0x10, 0x2e, 0x70, 0x62, 0x2e, 0x50, 0x6f, 0x64, 0x53, 0x70, 0x61, 0x63, 0x65,
+	0x49, 0x6e, 0x66, 0x6f, 0x42, 0x07, 0x5a, 0x05, 0x2e, 0x2f, 0x3b, 0x70, 0x62, 0x62, 0x06, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -472,16 +477,20 @@ var file_pb_proto_service_proto_goTypes = []interface{}{
 }
 var file_pb_proto_service_proto_depIdxs = []int32{
 	0, // 0: pb.PodInfo.resourceLimit:type_name -> pb.ResourceLimit
-	1, // 1: pb.CloudIdeService.createSpaceAndWaitForRunning:input_type -> pb.PodInfo
-	3, // 2: pb.CloudIdeService.deleteSpace:input_type -> pb.QueryOption
-	3, // 3: pb.CloudIdeService.getPodSpaceStatus:input_type -> pb.QueryOption
-	3, // 4: pb.CloudIdeService.getPodSpaceInfo:input_type -> pb.QueryOption
-	5, // 5: pb.CloudIdeService.createSpaceAndWaitForRunning:output_type -> pb.PodSpaceInfo
-	2, // 6: pb.CloudIdeService.deleteSpace:output_type -> pb.Response
-	4, // 7: pb.CloudIdeService.getPodSpaceStatus:output_type -> pb.PodStatus
-	5, // 8: pb.CloudIdeService.getPodSpaceInfo:output_type -> pb.PodSpaceInfo
-	5, // [5:9] is the sub-list for method output_type
-	1, // [1:5] is the sub-list for method input_type
+	1, // 1: pb.CloudIdeService.createSpace:input_type -> pb.PodInfo
+	1, // 2: pb.CloudIdeService.startSpace:input_type -> pb.PodInfo
+	3, // 3: pb.CloudIdeService.deleteSpace:input_type -> pb.QueryOption
+	3, // 4: pb.CloudIdeService.stopSpace:input_type -> pb.QueryOption
+	3, // 5: pb.CloudIdeService.getPodSpaceStatus:input_type -> pb.QueryOption
+	3, // 6: pb.CloudIdeService.getPodSpaceInfo:input_type -> pb.QueryOption
+	5, // 7: pb.CloudIdeService.createSpace:output_type -> pb.PodSpaceInfo
+	5, // 8: pb.CloudIdeService.startSpace:output_type -> pb.PodSpaceInfo
+	2, // 9: pb.CloudIdeService.deleteSpace:output_type -> pb.Response
+	2, // 10: pb.CloudIdeService.stopSpace:output_type -> pb.Response
+	4, // 11: pb.CloudIdeService.getPodSpaceStatus:output_type -> pb.PodStatus
+	5, // 12: pb.CloudIdeService.getPodSpaceInfo:output_type -> pb.PodSpaceInfo
+	7, // [7:13] is the sub-list for method output_type
+	1, // [1:7] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
 	1, // [1:1] is the sub-list for extension extendee
 	0, // [0:1] is the sub-list for field type_name
@@ -598,10 +607,14 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type CloudIdeServiceClient interface {
-	// 创建云IDE空间并等待Pod状态变为Running
-	CreateSpaceAndWaitForRunning(ctx context.Context, in *PodInfo, opts ...grpc.CallOption) (*PodSpaceInfo, error)
-	// 删除云IDE空间
+	// 创建云IDE空间并等待Pod状态变为Running,第一次创建,需要挂载存储卷
+	CreateSpace(ctx context.Context, in *PodInfo, opts ...grpc.CallOption) (*PodSpaceInfo, error)
+	// 启动(创建)云IDE空间,非第一次创建,无需挂载存储卷,使用之前的存储卷
+	StartSpace(ctx context.Context, in *PodInfo, opts ...grpc.CallOption) (*PodSpaceInfo, error)
+	// 删除云IDE空间,需要删除存储卷
 	DeleteSpace(ctx context.Context, in *QueryOption, opts ...grpc.CallOption) (*Response, error)
+	// 停止(删除)云工作空间,无需删除存储卷
+	StopSpace(ctx context.Context, in *QueryOption, opts ...grpc.CallOption) (*Response, error)
 	// 获取Pod运行状态
 	GetPodSpaceStatus(ctx context.Context, in *QueryOption, opts ...grpc.CallOption) (*PodStatus, error)
 	// 获取云IDE空间Pod的信息
@@ -616,9 +629,18 @@ func NewCloudIdeServiceClient(cc grpc.ClientConnInterface) CloudIdeServiceClient
 	return &cloudIdeServiceClient{cc}
 }
 
-func (c *cloudIdeServiceClient) CreateSpaceAndWaitForRunning(ctx context.Context, in *PodInfo, opts ...grpc.CallOption) (*PodSpaceInfo, error) {
+func (c *cloudIdeServiceClient) CreateSpace(ctx context.Context, in *PodInfo, opts ...grpc.CallOption) (*PodSpaceInfo, error) {
 	out := new(PodSpaceInfo)
-	err := c.cc.Invoke(ctx, "/pb.CloudIdeService/createSpaceAndWaitForRunning", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.CloudIdeService/createSpace", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cloudIdeServiceClient) StartSpace(ctx context.Context, in *PodInfo, opts ...grpc.CallOption) (*PodSpaceInfo, error) {
+	out := new(PodSpaceInfo)
+	err := c.cc.Invoke(ctx, "/pb.CloudIdeService/startSpace", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -628,6 +650,15 @@ func (c *cloudIdeServiceClient) CreateSpaceAndWaitForRunning(ctx context.Context
 func (c *cloudIdeServiceClient) DeleteSpace(ctx context.Context, in *QueryOption, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
 	err := c.cc.Invoke(ctx, "/pb.CloudIdeService/deleteSpace", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cloudIdeServiceClient) StopSpace(ctx context.Context, in *QueryOption, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, "/pb.CloudIdeService/stopSpace", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -654,10 +685,14 @@ func (c *cloudIdeServiceClient) GetPodSpaceInfo(ctx context.Context, in *QueryOp
 
 // CloudIdeServiceServer is the server API for CloudIdeService service.
 type CloudIdeServiceServer interface {
-	// 创建云IDE空间并等待Pod状态变为Running
-	CreateSpaceAndWaitForRunning(context.Context, *PodInfo) (*PodSpaceInfo, error)
-	// 删除云IDE空间
+	// 创建云IDE空间并等待Pod状态变为Running,第一次创建,需要挂载存储卷
+	CreateSpace(context.Context, *PodInfo) (*PodSpaceInfo, error)
+	// 启动(创建)云IDE空间,非第一次创建,无需挂载存储卷,使用之前的存储卷
+	StartSpace(context.Context, *PodInfo) (*PodSpaceInfo, error)
+	// 删除云IDE空间,需要删除存储卷
 	DeleteSpace(context.Context, *QueryOption) (*Response, error)
+	// 停止(删除)云工作空间,无需删除存储卷
+	StopSpace(context.Context, *QueryOption) (*Response, error)
 	// 获取Pod运行状态
 	GetPodSpaceStatus(context.Context, *QueryOption) (*PodStatus, error)
 	// 获取云IDE空间Pod的信息
@@ -668,11 +703,17 @@ type CloudIdeServiceServer interface {
 type UnimplementedCloudIdeServiceServer struct {
 }
 
-func (*UnimplementedCloudIdeServiceServer) CreateSpaceAndWaitForRunning(context.Context, *PodInfo) (*PodSpaceInfo, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateSpaceAndWaitForRunning not implemented")
+func (*UnimplementedCloudIdeServiceServer) CreateSpace(context.Context, *PodInfo) (*PodSpaceInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateSpace not implemented")
+}
+func (*UnimplementedCloudIdeServiceServer) StartSpace(context.Context, *PodInfo) (*PodSpaceInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StartSpace not implemented")
 }
 func (*UnimplementedCloudIdeServiceServer) DeleteSpace(context.Context, *QueryOption) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteSpace not implemented")
+}
+func (*UnimplementedCloudIdeServiceServer) StopSpace(context.Context, *QueryOption) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StopSpace not implemented")
 }
 func (*UnimplementedCloudIdeServiceServer) GetPodSpaceStatus(context.Context, *QueryOption) (*PodStatus, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPodSpaceStatus not implemented")
@@ -685,20 +726,38 @@ func RegisterCloudIdeServiceServer(s *grpc.Server, srv CloudIdeServiceServer) {
 	s.RegisterService(&_CloudIdeService_serviceDesc, srv)
 }
 
-func _CloudIdeService_CreateSpaceAndWaitForRunning_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _CloudIdeService_CreateSpace_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PodInfo)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CloudIdeServiceServer).CreateSpaceAndWaitForRunning(ctx, in)
+		return srv.(CloudIdeServiceServer).CreateSpace(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.CloudIdeService/CreateSpaceAndWaitForRunning",
+		FullMethod: "/pb.CloudIdeService/CreateSpace",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CloudIdeServiceServer).CreateSpaceAndWaitForRunning(ctx, req.(*PodInfo))
+		return srv.(CloudIdeServiceServer).CreateSpace(ctx, req.(*PodInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CloudIdeService_StartSpace_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PodInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CloudIdeServiceServer).StartSpace(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.CloudIdeService/StartSpace",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CloudIdeServiceServer).StartSpace(ctx, req.(*PodInfo))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -717,6 +776,24 @@ func _CloudIdeService_DeleteSpace_Handler(srv interface{}, ctx context.Context, 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CloudIdeServiceServer).DeleteSpace(ctx, req.(*QueryOption))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CloudIdeService_StopSpace_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryOption)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CloudIdeServiceServer).StopSpace(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.CloudIdeService/StopSpace",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CloudIdeServiceServer).StopSpace(ctx, req.(*QueryOption))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -762,12 +839,20 @@ var _CloudIdeService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*CloudIdeServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "createSpaceAndWaitForRunning",
-			Handler:    _CloudIdeService_CreateSpaceAndWaitForRunning_Handler,
+			MethodName: "createSpace",
+			Handler:    _CloudIdeService_CreateSpace_Handler,
+		},
+		{
+			MethodName: "startSpace",
+			Handler:    _CloudIdeService_StartSpace_Handler,
 		},
 		{
 			MethodName: "deleteSpace",
 			Handler:    _CloudIdeService_DeleteSpace_Handler,
+		},
+		{
+			MethodName: "stopSpace",
+			Handler:    _CloudIdeService_StopSpace_Handler,
 		},
 		{
 			MethodName: "getPodSpaceStatus",

@@ -28,3 +28,15 @@ func (u *UserDao) FindByUsername(username string) error {
 	var n int
 	return u.db.Get(&n, sql, username)
 }
+
+func (u *UserDao) FindByEmail(email string) error {
+	sql := `SELECT 1 FROM t_user WHERE email = ?`
+	var n int
+	return u.db.Get(&n, sql, email)
+}
+
+func (u *UserDao) AddUser(user *model.User) error {
+	sql := `Insert into t_user (uid, username, password, nickname, email, create_time, delete_time, status) values (?, ?, ?, ?, ?, ?, ?, ?)`
+	_, err := u.db.Exec(sql, user.Uid, user.Username, user.Password, user.Nickname, user.Email, user.CreateTime, user.DeleteTime, user.Status)
+	return err
+}

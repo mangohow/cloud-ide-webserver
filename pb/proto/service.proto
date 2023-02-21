@@ -41,10 +41,14 @@ message PodSpaceInfo {
 }
 
 service CloudIdeService {
-  // 创建云IDE空间并等待Pod状态变为Running
-  rpc createSpaceAndWaitForRunning(PodInfo) returns (PodSpaceInfo);
-  // 删除云IDE空间
+  // 创建云IDE空间并等待Pod状态变为Running,第一次创建,需要挂载存储卷
+  rpc createSpace(PodInfo) returns (PodSpaceInfo);
+  // 启动(创建)云IDE空间,非第一次创建,无需挂载存储卷,使用之前的存储卷
+  rpc startSpace(PodInfo) returns (PodSpaceInfo);
+  // 删除云IDE空间,需要删除存储卷
   rpc deleteSpace(QueryOption) returns (Response);
+  // 停止(删除)云工作空间,无需删除存储卷
+  rpc stopSpace(QueryOption) returns (Response);
   // 获取Pod运行状态
   rpc getPodSpaceStatus(QueryOption) returns (PodStatus);
   // 获取云IDE空间Pod的信息

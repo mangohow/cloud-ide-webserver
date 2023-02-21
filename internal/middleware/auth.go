@@ -12,14 +12,14 @@ func Auth() gin.HandlerFunc {
 		token := ctx.GetHeader("Authorization")
 		if token == "" {
 			logger.Logger().Warningf("未获得授权, ip:%s", ctx.Request.RemoteAddr)
-			ctx.JSON(http.StatusUnauthorized, nil)
+			ctx.Status(http.StatusUnauthorized)
 			ctx.Abort()
 			return
 		}
 
 		username, uid, id, err := encrypt.VerifyToken(token)
 		if err != nil {
-			ctx.JSON(http.StatusUnauthorized, nil)
+			ctx.Status(http.StatusUnauthorized)
 			ctx.Abort()
 			return
 		}

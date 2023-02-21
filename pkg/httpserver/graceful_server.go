@@ -34,7 +34,7 @@ func ListenAndServe(server *http.Server) {
 		if err != nil && err != http.ErrServerClosed {
 			panic(err)
 		}
-		fmt.Println("Server shutdown at", time.Now().Format(mytime.FormatYYYYMMDDhhmmss))
+		fmt.Println("Server shutdown at", time.Now().Format(mytime.FormatDateTime))
 	})
 }
 

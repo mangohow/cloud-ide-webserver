@@ -46,7 +46,7 @@ func (d *SpaceDao) FindCountByUserId(userId uint32) (count uint32, err error) {
 }
 
 func (d *SpaceDao) FindAllSpaceByUserId(userId uint32) (spaces []model.Space, err error) {
-	sql := `SELECT id, tmpl_id, spec_id, name, create_time, stop_time, total_time FROM t_space WHERE status != ? AND user_id = ?`
+	sql := `SELECT id, tmpl_id, spec_id, sid, name, create_time, stop_time, total_time FROM t_space WHERE status != ? AND user_id = ?`
 	err = d.db.Select(&spaces, sql, model.SpaceStatusDeleted, userId)
 	return
 }
@@ -63,5 +63,17 @@ func (d *SpaceDao) DeleteSpaceById(id uint32) error {
 	sql := `UPDATE t_space SET status = ? WHERE id = ?`
 	_, err := d.db.Exec(sql, model.SpaceStatusDeleted, id)
 
+	return err
+}
+
+func (d *SpaceDao) FindByIdAndUserId(id, userId uint32) (space model.Space, err error) {
+	sql := `SELECT tmpl_id, spec_id, sid, name, status FROM t_space WHERE id = ? AND user_id = ?;`
+	err = d.db.Get(&space, sql, id, userId)
+	return
+}
+
+func (d *SpaceDao) UpdateStatusById(id, status uint32) error {
+	sql := `UPDATE t_space SET status = ? WHERE id = ?`
+	_, err := d.db.Exec(sql, status, id)
 	return err
 }

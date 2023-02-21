@@ -10,8 +10,9 @@ func Register(engine *gin.Engine) {
 	userController := controller.NewUserController()
 	{
 		engine.POST("/login", Decorate(userController.Login))
-		engine.GET("/uaval", Decorate(userController.CheckUsernameAvailable))
+		engine.GET("/uname_available", Decorate(userController.CheckUsernameAvailable))
 		engine.POST("/register", Decorate(userController.Register))
+		engine.GET("/validate_code", Decorate(userController.GetEmailValidateCode))
 	}
 	apiGroup := engine.Group("/api", middleware.Auth())
 	tmplController := controller.NewSpaceTmplController()

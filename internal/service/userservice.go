@@ -3,11 +3,14 @@ package service
 import (
 	"errors"
 	"github.com/mangohow/cloud-ide-webserver/internal/dao"
+	"github.com/mangohow/cloud-ide-webserver/internal/dao/rdis"
 	"github.com/mangohow/cloud-ide-webserver/internal/model"
 	"github.com/mangohow/cloud-ide-webserver/pkg/code"
 	"github.com/mangohow/cloud-ide-webserver/pkg/logger"
 	"github.com/mangohow/cloud-ide-webserver/pkg/utils/encrypt"
 	"github.com/sirupsen/logrus"
+	"gopkg.in/mgo.v2/bson"
+	"time"
 )
 
 type UserService struct {
@@ -54,4 +57,43 @@ func (u *UserService) CheckUsernameAvailable(username string) bool {
 	}
 
 	return true
+}
+
+var (
+	ErrEmailCodeIncorrect = errors.New("email code incorrect")
+	ErrEmailAlreadyInUse  = errors.New("this email had been registered")
+)
+
+func (u *UserService) UserRegister(info *model.RegisterInfo) error {
+	// 1.验证邮箱验证码
+	err := rdis.VerifyEmailValidateCode(info.Email, info.EmailCode)
+	if err != nil {
+		u.logger.Infof("verify email code failed err:%v", err)
+		return ErrEmailCodeIncorrect
+	}
+
+	// 2.验证是否已经存在账号与该邮箱关联，一个邮箱只能创建一个账号
+	err = u.dao.FindByEmail(info.Email)
+	if err == nil { // 如果err == nil说明查找到了记录
+		return ErrEmailAlreadyInUse
+	}
+
+	// 3.生成新的用户
+	now := time.Now()
+	user := &model.User{
+		Uid:        bson.NewObjectId().Hex(),
+		Username:   info.Username,
+		Password:   info.Password,
+		Nickname:   info.Nickname,
+		Email:      info.Email,
+		CreateTime: now,
+		DeleteTime: now,
+	}
+
+	err = u.dao.AddUser(user)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

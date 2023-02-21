@@ -22,6 +22,23 @@ func AddRunningSpace(uid string, space *model.RunningSpace) error {
 	return res.Err()
 }
 
+// CheckHasRunningSpace 检查用户是否有正在运行的工作空间
+func CheckHasRunningSpace(uid string) (bool, error) {
+	res := client.HGet(context.Background(), HostsHashKey, uid)
+	if err := res.Err(); err != nil {
+		if err == redis.Nil {
+			return false, nil
+		}
+		return false, err
+	}
+
+	if res.Val() == "" {
+		return false, nil
+	}
+
+	return true, nil
+}
+
 func DeleteRunningSpace(uid string) error {
 	space, err := GetRunningSpace(uid)
 	if err != nil {

@@ -47,7 +47,7 @@ func (c *CloudCodeController) CreateSpace(ctx *gin.Context) *serialize.Response 
 		return serialize.NewResponseOKND(code.SpaceCreateNameDuplicate)
 	case service.ErrReachMaxSpaceCount:
 		return serialize.NewResponseOKND(code.SpaceCreateReachMaxCount)
-	case service.ErrCreate:
+	case service.ErrSpaceCreate:
 		return serialize.NewResponseOKND(code.SpaceCreateFailed)
 	case service.ErrReqParamInvalid:
 		ctx.Status(http.StatusBadRequest)
@@ -107,10 +107,12 @@ func (c *CloudCodeController) CreateSpaceAndStart(ctx *gin.Context) *serialize.R
 		return serialize.NewResponseOKND(code.SpaceCreateNameDuplicate)
 	case service.ErrReachMaxSpaceCount:
 		return serialize.NewResponseOKND(code.SpaceCreateReachMaxCount)
-	case service.ErrCreate:
+	case service.ErrSpaceCreate:
 		return serialize.NewResponseOKND(code.SpaceCreateFailed)
 	case service.ErrSpaceStart:
 		return serialize.NewResponseOKND(code.SpaceStartFailed)
+	case service.ErrOtherSpaceIsRunning:
+		return serialize.NewResponseOKND(code.SpaceOtherSpaceIsRunning)
 	case service.ErrReqParamInvalid:
 		ctx.Status(http.StatusBadRequest)
 		return nil
@@ -127,20 +129,50 @@ func (c *CloudCodeController) generatePodName(username string, id uint32) string
 	return username + strconv.Itoa(int(id)) + "-" + strconv.Itoa(int(time.Now().Unix()))
 }
 
-// StartSpace 启动一个已存在的云空间
+// StartSpace 启动一个已存在的云空间 method: POST path: /api/space_start
+// request param: space id
 func (c *CloudCodeController) StartSpace(ctx *gin.Context) *serialize.Response {
-	panic("TODO")
+	var req struct {
+		Id uint32 `json:"id"`
+	}
+	err := ctx.ShouldBind(&req)
+	if err != nil {
+		c.logger.Warnf("bind param error:%v", err)
+		ctx.Status(http.StatusBadRequest)
+		return nil
+	}
+
+	idi, _ := ctx.Get("id")
+	id := idi.(uint32)
+	uidi, _ := ctx.Get("uid")
+	uid := uidi.(string)
+
+	space, err := c.spaceService.StartWorkspace(req.Id, id, uid)
+	switch err {
+	case service.ErrWorkSpaceNotExist:
+		return serialize.NewResponseOKND(code.SpaceStartNotExist)
+	case service.ErrSpaceStart:
+		return serialize.NewResponseOKND(code.SpaceStartFailed)
+	case service.ErrOtherSpaceIsRunning:
+		return serialize.NewResponseOKND(code.SpaceOtherSpaceIsRunning)
+	}
+
+	if err != nil {
+		return serialize.NewResponseOKND(code.SpaceStartFailed)
+	}
+
+	return serialize.NewResponseOk(code.SpaceStartSuccess, space)
 }
 
 // StopSpace 停止正在运行的云空间 method: PUT path: /api/space_stop
 // Request Param: sid
 func (c *CloudCodeController) StopSpace(ctx *gin.Context) *serialize.Response {
-	var req struct{
+	var req struct {
 		Sid string `json:"sid"`
 	}
 	err := ctx.ShouldBind(&req)
 	if err != nil {
-		c.logger.Warningf("bind error:%v", err)
+		c.logger.Warningf("bind param error:%v", err)
 		ctx.Status(http.StatusBadRequest)
 		return nil
 	}
@@ -174,7 +206,14 @@ func (c *CloudCodeController) DeleteSpace(ctx *gin.Context) *serialize.Response 
 	}
 	c.logger.Debug("id:", id)
 
-	err = c.spaceService.DeleteWorkspace(id)
+	uidi, ok := ctx.Get("uid")
+	if !ok {
+		ctx.Status(http.StatusBadRequest)
+		return nil
+	}
+
+	uid := uidi.(string)
+	err = c.spaceService.DeleteWorkspace(id, uid)
 	if err != nil {
 		if err == service.ErrWorkSpaceIsRunning {
 			return serialize.NewResponseOKND(code.SpaceDeleteIsRunning)

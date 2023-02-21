@@ -10,6 +10,7 @@ var (
 	RedisConfig  *RedisConf
 	LoggerConfig *LoggerConf
 	GrpcConfig   *GrpcConf
+	EmailConfig  *EmailConf
 )
 
 type ServerConf struct {
@@ -41,6 +42,13 @@ type LoggerConf struct {
 	ToFile      bool
 }
 
+type EmailConf struct {
+	Host        string
+	Port        uint32
+	SenderEmail string
+	AuthCode    string
+}
+
 type GrpcConf struct {
 	Addr string
 }
@@ -59,6 +67,7 @@ func LoadConf() error {
 	initRedisConf()
 	initLogConf()
 	initGrpcConf()
+	initEmailConf()
 
 	return nil
 }
@@ -102,4 +111,13 @@ func initLogConf() {
 
 func initGrpcConf() {
 	GrpcConfig = &GrpcConf{Addr: viper.GetString("grpc.addr")}
+}
+
+func initEmailConf() {
+	EmailConfig = &EmailConf{
+		Host:        viper.GetString("email.host"),
+		Port:        viper.GetUint32("email.port"),
+		SenderEmail: viper.GetString("email.senderEmail"),
+		AuthCode:    viper.GetString("email.authCode"),
+	}
 }
