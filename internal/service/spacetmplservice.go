@@ -21,10 +21,12 @@ func NewSpaceTmplService() *SpaceTmplService {
 	}
 }
 
-func (s *SpaceTmplService) GetAllUsingTmpl() (tmpls []*model.SpaceTemplate, err error) {
-	return s.tmplCache.GetAll(), nil
+func (s *SpaceTmplService) GetAllUsingTmpl() ([]*model.SpaceTemplate, []*model.TmplKind, error) {
+	tmpls := s.tmplCache.GetAllTmpl()
+	kinds := s.tmplCache.GetAllKinds()
+	return tmpls, kinds, nil
 }
 
-func (s *SpaceTmplService) GetAllSpec() (specs []*model.SpaceSpec, err error) {
+func (s *SpaceTmplService) GetAllSpec() ([]*model.SpaceSpec, error) {
 	return s.specCache.GetAll(), nil
 }

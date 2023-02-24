@@ -15,7 +15,7 @@ type SpaceTemplate struct {
 	DeleteTime time.Time `json:"delete_time" db:"delete_time"`
 }
 
-type SpaceKind struct {
+type TmplKind struct {
 	Id   uint32 `json:"id" db:"id"`
 	Name string `json:"name" db:"name"`
 }

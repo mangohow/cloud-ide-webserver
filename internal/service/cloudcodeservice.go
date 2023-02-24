@@ -73,7 +73,7 @@ func (c *CloudCodeService) CreateWorkspace(req *reqtype.SpaceCreateOption, userI
 	}
 
 	// 3、从缓存中获取要创建的云空间的模板
-	tmpl := c.tmplCache.Get(req.TmplId)
+	tmpl := c.tmplCache.GetTmpl(req.TmplId)
 	if tmpl == nil {
 		c.logger.Warnf("get tmpl cache error:%v", err)
 		return nil, ErrReqParamInvalid
@@ -140,7 +140,7 @@ type StartFunc func(ctx context.Context, in *pb.PodInfo, opts ...grpc.CallOption
 // startWorkspace 启动工作空间
 func (c *CloudCodeService) startWorkspace(space *model.Space, uid string, startFunc StartFunc) (*model.Space, error) {
 	// 1、获取空间模板
-	tmpl := c.tmplCache.Get(space.TmplId)
+	tmpl := c.tmplCache.GetTmpl(space.TmplId)
 	if tmpl == nil {
 		c.logger.Warnf("get tmpl cache error")
 		return nil, ErrSpaceStart

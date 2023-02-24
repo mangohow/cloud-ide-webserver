@@ -21,6 +21,12 @@ const (
 	TmplDeleted
 )
 
+func (s *SpaceTemplateDao) GetAllTmplKind() (kinds []model.TmplKind, err error) {
+	sql := `SELECT id, name FROM t_template_kind`
+	err = s.db.Select(&kinds, sql)
+	return
+}
+
 func (s *SpaceTemplateDao) GetAllUsingTmpl() (tmpls []model.SpaceTemplate, err error) {
 	sql := "SELECT id, kind_id, name, `desc`, tags, image FROM t_space_template WHERE status = ?"
 	err = s.db.Select(&tmpls, sql, TmplUsing)
