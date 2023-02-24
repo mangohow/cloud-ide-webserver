@@ -90,7 +90,7 @@ func (t *TmplCache) GetAllKinds() []*model.TmplKind {
 	kinds := make([]*model.TmplKind, len(items))
 	for i := 0; i < len(items); i++ {
 		k := *items[i]
-		items[i] = &k
+		kinds[i] = &k
 	}
 
 	return kinds

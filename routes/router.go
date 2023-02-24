@@ -11,6 +11,7 @@ func NewGinRouter(middlewares ...gin.HandlerFunc) *gin.Engine {
 	if conf.ServerConfig.Mode == "dev" {
 		router = gin.Default()
 	} else {
+		gin.SetMode(gin.ReleaseMode)
 		router = gin.New()
 	}
 	if len(middlewares) > 0 {
