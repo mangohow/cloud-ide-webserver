@@ -24,6 +24,9 @@ func NewSpaceTmplService() *SpaceTmplService {
 func (s *SpaceTmplService) GetAllUsingTmpl() ([]*model.SpaceTemplate, []*model.TmplKind, error) {
 	tmpls := s.tmplCache.GetAllTmpl()
 	kinds := s.tmplCache.GetAllKinds()
+	for i := 0; i < len(tmpls); i++ {
+		tmpls[i].Image = ""
+	}
 	return tmpls, kinds, nil
 }
 

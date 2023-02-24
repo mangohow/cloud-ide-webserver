@@ -11,6 +11,7 @@ type SpaceTemplate struct {
 	Tags       string    `json:"tags" db:"tags"`       // 标签，使用|隔开
 	Image      string    `json:"image" db:"image"`     // 镜像
 	Status     uint32    `json:"status" db:"status"`   // 0可用 1 已删除
+	Avatar     string    `json:"avatar" db:"avatar"`
 	CreateTime time.Time `json:"create_time" db:"create_time"`
 	DeleteTime time.Time `json:"delete_time" db:"delete_time"`
 }

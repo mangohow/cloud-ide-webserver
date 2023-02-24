@@ -28,14 +28,14 @@ func (s *SpaceTemplateDao) GetAllTmplKind() (kinds []model.TmplKind, err error) 
 }
 
 func (s *SpaceTemplateDao) GetAllUsingTmpl() (tmpls []model.SpaceTemplate, err error) {
-	sql := "SELECT id, kind_id, name, `desc`, tags, image FROM t_space_template WHERE status = ?"
+	sql := "SELECT id, kind_id, name, `desc`, tags, image, avatar FROM t_space_template WHERE status = ?"
 	err = s.db.Select(&tmpls, sql, TmplUsing)
 
 	return
 }
 
 func (s *SpaceTemplateDao) GetAllTmpl() (tmpls []model.SpaceTemplate, err error) {
-	sql := "SELECT id, kind_id, name, `desc`, tags, image FROM t_space_template"
+	sql := "SELECT id, kind_id, name, `desc`, tags, image, avatar FROM t_space_template"
 	err = s.db.Select(&tmpls, sql)
 
 	return
