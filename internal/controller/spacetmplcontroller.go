@@ -26,11 +26,22 @@ func (s *SpaceTmplController) SpaceTmpls(ctx *gin.Context) *serialize.Response {
 	tmpls, kinds, err := s.service.GetAllUsingTmpl()
 	if err != nil {
 		s.logger.Warnf("get tmpls err:%v", err)
-		return serialize.NewResponseOk(code.QueryFailed, nil)
+		return serialize.NewResponseOKND(code.QueryFailed)
 	}
 
 	return serialize.NewResponseOk(code.QuerySuccess, gin.H{
 		"tmpls": tmpls,
 		"kinds": kinds,
 	})
+}
+
+// SpaceSpecs 获取空间规格 method: GET path:/api/specs
+func (s *SpaceTmplController) SpaceSpecs(ctx *gin.Context) *serialize.Response {
+	specs, err := s.service.GetAllSpec()
+	if err != nil {
+		s.logger.Warnf("get specs error:%v", err)
+		return serialize.NewResponseOKND(code.QueryFailed)
+	}
+
+	return serialize.NewResponseOk(code.QuerySuccess, specs)
 }

@@ -18,6 +18,7 @@ func Register(engine *gin.Engine) {
 	tmplController := controller.NewSpaceTmplController()
 	{
 		apiGroup.GET("/tmpls", Decorate(tmplController.SpaceTmpls))
+		apiGroup.GET("/specs", Decorate(tmplController.SpaceSpecs))
 	}
 	spaceController := controller.NewCloudCodeController()
 	{

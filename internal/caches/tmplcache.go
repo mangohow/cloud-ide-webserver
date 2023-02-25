@@ -7,7 +7,7 @@ import (
 )
 
 // 加载mysql中的SpaceTemplate到内存中，数据量不大
-
+// TODO 每隔一段时间更新缓存
 type TmplCache struct {
 	cache *cache.Cache
 	dao   *dao.SpaceTemplateDao
