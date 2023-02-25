@@ -48,7 +48,7 @@ type Space struct {
 	DeleteTime    time.Time     `json:"delete_time" db:"delete_time"`
 	StopTime      time.Time     `json:"stop_time" db:"stop_time"`   // 停止时间
 	TotalTime     time.Duration `json:"total_time" db:"total_time"` // 总运行时间
-
+	Environment   string        `json:"environment"`
 }
 
 // SpaceSpec 云空间的配置

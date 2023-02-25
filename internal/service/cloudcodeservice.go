@@ -330,6 +330,18 @@ func (c *CloudCodeService) ListWorkspace(userId uint32, uid string) ([]model.Spa
 		return nil, err
 	}
 
+	tmpls := c.tmplCache.GetAllTmpl()
+	m := make(map[uint32]*model.SpaceTemplate)
+	for i := 0; i < len(tmpls); i++ {
+		m[tmpls[i].Id] = tmpls[i]
+	}
+
+	tmplId := uint32(0)
+	for i := 0; i < len(spaces); i++ {
+		tmplId = spaces[i].TmplId
+		spaces[i].Environment = m[tmplId].Desc
+	}
+
 	runningSpace, err := rdis.GetRunningSpace(uid)
 	if err != nil {
 		c.logger.Warnf("get running space error:%v, uid:%s", err, uid)
