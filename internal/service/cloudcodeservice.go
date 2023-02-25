@@ -369,6 +369,23 @@ func (c *CloudCodeService) generatePodName(sid, uid string) string {
 	return strings.Join([]string{"ws", uid, sid}, "-")
 }
 
+func (c *CloudCodeService) ModifyName(name string, id, userId uint32) error {
+	// 1、验证名称是否重复
+	if err := c.dao.FindByUserIdAndName(userId, name); err == nil {
+		c.logger.Warnf("find space error:%v", err)
+		return ErrNameDuplicate
+	}
+
+	// 2.修改名称
+	err := c.dao.UpdateNameById(name, id)
+	if err != nil {
+		c.logger.Warnf("update space name error:%v", err)
+		return err
+	}
+
+	return nil
+}
+
 // generateSID 生成Space id
 func generateSID() string {
 	return bson.NewObjectId().Hex()

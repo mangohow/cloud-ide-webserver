@@ -28,5 +28,6 @@ func Register(engine *gin.Engine) {
 		apiGroup.POST("/space_cas", Decorate(spaceController.CreateSpaceAndStart))
 		apiGroup.PUT("/space_start", Decorate(spaceController.StartSpace))
 		apiGroup.PUT("/space_stop", Decorate(spaceController.StopSpace))
+		apiGroup.POST("/space_name", Decorate(spaceController.ModifySpaceName))
 	}
 }

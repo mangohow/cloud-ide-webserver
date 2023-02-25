@@ -38,6 +38,9 @@ const (
 
 	SpaceStartNotExist
 	SpaceOtherSpaceIsRunning
+
+	SpaceNameModifySuccess
+	SpaceNameModifyFailed
 )
 
 type UserStatus uint32
@@ -78,6 +81,8 @@ var messageForCode = map[uint32]string{
 	UserEmailAlreadyInUse:       "该邮箱已经被注册",
 	SpaceStartNotExist:          "工作空间不存在",
 	SpaceOtherSpaceIsRunning:    "检测到有其它工作空间正在运行,请先停止正在运行的工作空间",
+	SpaceNameModifySuccess:      "名称修改成功",
+	SpaceNameModifyFailed:       "名称修改失败",
 }
 
 func GetMessage(code uint32) string {

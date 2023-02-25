@@ -77,3 +77,11 @@ func (d *SpaceDao) UpdateStatusById(id, status uint32) error {
 	_, err := d.db.Exec(sql, status, id)
 	return err
 }
+
+func (d *SpaceDao) UpdateNameById(name string, id uint32) error {
+	sql := `UPDATE t_space SET name = ? WHERE id = ?`
+	_, err := d.db.Exec(sql, name, id)
+	return err
+}
+
+

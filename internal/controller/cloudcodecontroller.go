@@ -244,3 +244,32 @@ func (c *CloudCodeController) ListSpace(ctx *gin.Context) *serialize.Response {
 
 	return serialize.NewResponseOk(code.QuerySuccess, spaces)
 }
+
+// ModifySpaceName 修改工作空间名称 method: POST path: /api/space_name
+func (c *CloudCodeController) ModifySpaceName(ctx *gin.Context) *serialize.Response {
+	var req struct{
+		Name string `json:"name"`  // 新的工作空间的名称
+		Id uint32 `json:"id"`      // 工作空间id
+	}
+	err := ctx.ShouldBind(&req)
+	if err != nil {
+		c.logger.Warnf("bind req error:%v", err)
+		return serialize.NewResponseOKND(code.SpaceNameModifyFailed)
+	}
+	v1, e1 := ctx.Get("id")
+	if !e1 {
+		ctx.Status(http.StatusBadRequest)
+		return nil
+	}
+
+	userId := v1.(uint32)
+	err = c.spaceService.ModifyName(req.Name, req.Id, userId)
+	switch err {
+	case service.ErrNameDuplicate:
+		return serialize.NewResponseOKND(code.SpaceCreateNameDuplicate)
+	case nil:
+		return serialize.NewResponseOKND(code.SpaceNameModifySuccess)
+	default:
+		return serialize.NewResponseOKND(code.SpaceNameModifyFailed)
+	}
+}
