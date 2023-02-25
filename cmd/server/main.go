@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/mangohow/cloud-ide-webserver/conf"
 	"github.com/mangohow/cloud-ide-webserver/internal/dao/db"
+	"github.com/mangohow/cloud-ide-webserver/internal/dao/rdis"
 	"github.com/mangohow/cloud-ide-webserver/pkg/httpserver"
 	"github.com/mangohow/cloud-ide-webserver/pkg/logger"
 	"github.com/mangohow/cloud-ide-webserver/routes"
@@ -27,9 +28,9 @@ func main() {
 	}
 
 	// 初始化redis
-	//if err := rdis.InitRedis(); err != nil {
-	//	panic(fmt.Errorf("init redis failed, reason:%s", err.Error()))
-	//}
+	if err := rdis.InitRedis(); err != nil {
+		panic(fmt.Errorf("init redis failed, reason:%s", err.Error()))
+	}
 
 	// 创建gin路由
 	engine := routes.NewGinRouter()
