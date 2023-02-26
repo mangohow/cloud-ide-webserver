@@ -51,9 +51,9 @@ func (d *SpaceDao) FindAllSpaceByUserId(userId uint32) (spaces []model.Space, er
 	return
 }
 
-func (d *SpaceDao) FindSidById(id uint32) (sid string, err error) {
-	sql := `SELECT sid FROM t_space WHERE id = ?`
-	err = d.db.Get(&sid, sql, id)
+func (d *SpaceDao) FindSidAndStatusById(id uint32) (space model.Space, err error) {
+	sql := `SELECT sid, status FROM t_space WHERE id = ?`
+	err = d.db.Get(&space, sql, id)
 
 	return
 }

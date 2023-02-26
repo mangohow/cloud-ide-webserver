@@ -5,6 +5,7 @@ import (
 	"github.com/mangohow/cloud-ide-webserver/internal/model"
 	"github.com/mangohow/cloud-ide-webserver/pkg/cache"
 	"strconv"
+	"time"
 )
 
 // 加载mysql中的SpaceSpec到内存中，数据量不大
@@ -15,10 +16,34 @@ type SpecCache struct {
 }
 
 func newSpecCache(dao *dao.SpaceTemplateDao) *SpecCache {
-	return &SpecCache{
+	s := &SpecCache{
 		cache: cache.New("space-spec"),
 		dao:   dao,
 	}
+
+	// 每隔一分钟刷新一次
+	go func() {
+		ticker := time.NewTicker(time.Minute)
+		defer ticker.Stop()
+		for {
+			<- ticker.C
+			s.refresh()
+		}
+	}()
+
+	return s
+}
+
+func (c *SpecCache) refresh() {
+	specs, err := c.dao.GetAllSpec()
+	if err != nil {
+		return
+	}
+	m := make(map[string]interface{}, len(specs))
+	for i, _ := range specs {
+		m[strconv.Itoa(int(specs[i].Id))] = &specs[i]
+	}
+	c.cache.Replace(m)
 }
 
 func (c *SpecCache) LoadCache() {

@@ -4,20 +4,32 @@ import (
 	"github.com/mangohow/cloud-ide-webserver/internal/dao"
 	"github.com/mangohow/cloud-ide-webserver/internal/model"
 	"github.com/mangohow/cloud-ide-webserver/pkg/cache"
+	"time"
 )
 
-// 加载mysql中的SpaceTemplate到内存中，数据量不大
-// TODO 每隔一段时间更新缓存
+// TmplCache 加载mysql中的SpaceTemplate到内存中，数据量不大
 type TmplCache struct {
 	cache *cache.Cache
 	dao   *dao.SpaceTemplateDao
 }
 
 func newTmplCache(dao *dao.SpaceTemplateDao) *TmplCache {
-	return &TmplCache{
+	t := &TmplCache{
 		cache: cache.New("spaceTmpl"),
 		dao:   dao,
 	}
+
+	// 每隔一分钟刷新一次缓存
+	go func() {
+		ticker := time.NewTicker(time.Minute)
+		defer ticker.Stop()
+		for {
+			<-ticker.C
+			t.LoadCache()
+		}
+	}()
+
+	return t
 }
 
 const (

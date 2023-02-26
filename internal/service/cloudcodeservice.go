@@ -221,13 +221,13 @@ var (
 // DeleteWorkspace 删除云工作空间
 func (c *CloudCodeService) DeleteWorkspace(id uint32, uid string) error {
 	// 1、检查该工作空间是否正在运行，如果正在运行就返回错误
-	sid, err := c.dao.FindSidById(id)
+	space, err := c.dao.FindSidAndStatusById(id)
 	if err != nil {
 		c.logger.Warnf("find sid error:%v", err)
 		return err
 	}
 	// 从redis中查询
-	isRunning, err := rdis.CheckIsRunning(sid)
+	isRunning, err := rdis.CheckIsRunning(space.Sid)
 	if err != nil {
 		c.logger.Warnf("check is running error:%v", err)
 		return err
@@ -236,14 +236,16 @@ func (c *CloudCodeService) DeleteWorkspace(id uint32, uid string) error {
 		return ErrWorkSpaceIsRunning
 	}
 
-	// 2、通知controller删除该workspace联的资源
-	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Second*30)
-	defer cancelFunc()
-	name := c.generatePodName(sid, uid)
-	_, err = c.rpc.DeleteSpace(ctx, &pb.QueryOption{Name: name, Namespace: CloudCodeNamespace})
-	if err != nil {
-		c.logger.Warnf("delete workspace err:%v", err)
-		return err
+	// 2、通知controller删除该workspace联的资源,如果该工作空间没有启动过,就不需要
+	if space.Status != model.SpaceStatusUncreated {
+		ctx, cancelFunc := context.WithTimeout(context.Background(), time.Second*30)
+		defer cancelFunc()
+		name := c.generatePodName(space.Sid, uid)
+		_, err = c.rpc.DeleteSpace(ctx, &pb.QueryOption{Name: name, Namespace: CloudCodeNamespace})
+		if err != nil {
+			c.logger.Warnf("delete workspace err:%v", err)
+			return err
+		}
 	}
 
 	// 3、从mysql中删除记录
