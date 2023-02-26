@@ -213,6 +213,7 @@ func (c *CloudCodeService) startWorkspace(space *model.Space, uid string, startF
 	return space, nil
 }
 
+
 var (
 	ErrWorkSpaceIsRunning    = errors.New("workspace is running")
 	ErrWorkSpaceIsNotRunning = errors.New("workspace is not running")
