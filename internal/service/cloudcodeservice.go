@@ -333,16 +333,10 @@ func (c *CloudCodeService) ListWorkspace(userId uint32, uid string) ([]model.Spa
 		return nil, err
 	}
 
-	tmpls := c.tmplCache.GetAllTmpl()
-	m := make(map[uint32]*model.SpaceTemplate)
-	for i := 0; i < len(tmpls); i++ {
-		m[tmpls[i].Id] = tmpls[i]
-	}
-
-	tmplId := uint32(0)
+	// 填充environment字段和spec字段
 	for i := 0; i < len(spaces); i++ {
-		tmplId = spaces[i].TmplId
-		spaces[i].Environment = m[tmplId].Desc
+		spaces[i].Environment = c.tmplCache.GetTmpl(spaces[i].TmplId).Desc
+		spaces[i].Spec = *c.specCache.Get(spaces[i].SpecId)
 	}
 
 	runningSpace, err := rdis.GetRunningSpace(uid)
