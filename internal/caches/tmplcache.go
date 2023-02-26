@@ -43,11 +43,11 @@ func (t *TmplCache) LoadCache() {
 		panic(err)
 	}
 
-	tpls := make([]*model.SpaceTemplate, len(tmpls))
+	tpls := make(map[uint32]*model.SpaceTemplate, len(tmpls))
 
 	for i := 0; i < len(tmpls); i++ {
-		tmpl := tmpls[i]
-		tpls[i] = &tmpl
+		tp := tmpls[i]
+		tpls[tp.Id] = &tp
 	}
 	t.cache.Set(TmplsKey, tpls)
 
@@ -55,10 +55,10 @@ func (t *TmplCache) LoadCache() {
 	if err != nil {
 		panic(err)
 	}
-	kds := make([]*model.TmplKind, len(kinds))
+	kds := make(map[uint32]*model.TmplKind, len(kinds))
 	for i := 0; i < len(kinds); i++ {
-		k := kinds[i]
-		kds[i] = &k
+		kd := kinds[i]
+		kds[kd.Id] = &kd
 	}
 	t.cache.Set(KindsKey, kds)
 }
@@ -69,9 +69,12 @@ func (t *TmplCache) GetTmpl(key uint32) *model.SpaceTemplate {
 		return nil
 	}
 
-	tps, ok := item.([]*model.SpaceTemplate)
+	tps, ok := item.(map[uint32]*model.SpaceTemplate)
+	if !ok {
+		return nil
+	}
 
-	tmpl := *tps[key]
+	tmpl := *(tps[key])
 	return &tmpl
 }
 
@@ -80,13 +83,16 @@ func (t *TmplCache) GetAllTmpl() []*model.SpaceTemplate {
 	if !ok {
 		return nil
 	}
-	items := get.([]*model.SpaceTemplate)
+
+	items := get.(map[uint32]*model.SpaceTemplate)
 
 	// 拷贝一份
 	tmpls := make([]*model.SpaceTemplate, len(items))
-	for i := 0; i < len(items); i++ {
-		tp := *items[i]
-		tmpls[i] = &tp
+	i := 0
+	for _, v := range items {
+		p := *v
+		tmpls[i] = &p
+		i++
 	}
 
 	return tmpls
@@ -97,11 +103,12 @@ func (t *TmplCache) GetAllKinds() []*model.TmplKind {
 	if !ok {
 		return nil
 	}
-	items := get.([]*model.TmplKind)
+	items := get.(map[uint32]*model.TmplKind)
 
 	kinds := make([]*model.TmplKind, len(items))
-	for i := 0; i < len(items); i++ {
-		k := *items[i]
+	i := 0
+	for _, v := range items {
+		k := *v
 		kinds[i] = &k
 	}
 
