@@ -22,6 +22,7 @@ func Register(engine *gin.Engine) {
 		apiGroup.GET("/template/list", Decorate(tmplController.SpaceTmpls))
 		apiGroup.GET("/spec/list", Decorate(tmplController.SpaceSpecs))
 	}
+
 	spaceController := controller.NewCloudCodeController()
 	{
 		apiGroup.GET("/workspace/list", Decorate(spaceController.ListSpace))
