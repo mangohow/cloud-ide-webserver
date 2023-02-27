@@ -5,7 +5,7 @@ server:
   mode: "Dev"
 
 mysql:
-  dataSourceName: "root:mgh99999@(192.168.44.100:3306)/cloudcode?charset=utf8mb4&parseTime=true&loc=Local"
+  dataSourceName: "root:123456@(192.168.44.100:3306)/cloudcode?charset=utf8mb4&parseTime=true&loc=Local"
   maxOpenConns: 20
   maxIdleConns: 10
 
@@ -29,5 +29,5 @@ grpc:
 email:
   host: "smtp.qq.com"
   port: 25
-  senderEmail: "mghgyf@qq.com"
-  authCode: "qfvgpqlmqirqbaeg"
+  senderEmail: ""
+  authCode: ""
