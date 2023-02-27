@@ -31,7 +31,7 @@ func NewUserController() *UserController {
 	}
 }
 
-// Login method: POST path: /login
+// Login method: POST path: /auth/login
 func (u *UserController) Login(ctx *gin.Context) *serialize.Response {
 	var userInfo struct {
 		Username string `json:"username"`
@@ -62,7 +62,7 @@ func (u *UserController) Login(ctx *gin.Context) *serialize.Response {
 	return serialize.NewResponseOk(code.LoginSuccess, user)
 }
 
-// Register 用户注册 method: POST path: /register
+// Register 用户注册 method: POST path: /auth/register
 func (u *UserController) Register(ctx *gin.Context) *serialize.Response {
 	var info model.RegisterInfo
 	err := ctx.ShouldBind(&info)
@@ -95,7 +95,7 @@ func (u *UserController) Register(ctx *gin.Context) *serialize.Response {
 	return serialize.NewResponseOKND(code.UserRegisterFailed)
 }
 
-// CheckUsernameAvailable 检测用户名是否可用 method: GET path: /uname_available
+// CheckUsernameAvailable 检测用户名是否可用 method: GET path: /auth/uname_available
 func (u *UserController) CheckUsernameAvailable(ctx *gin.Context) *serialize.Response {
 	u.logger.Debugf("check username available")
 	value := ctx.Query("username")
@@ -112,7 +112,7 @@ func (u *UserController) CheckUsernameAvailable(ctx *gin.Context) *serialize.Res
 	return serialize.NewResponseOKND(code.UserNameUnavailable)
 }
 
-// GetEmailValidateCode 通过邮箱获取验证码 method: GET path: /validate_code
+// GetEmailValidateCode 通过邮箱获取验证码 method: GET path: /auth/validate_code
 func (u *UserController) GetEmailValidateCode(ctx *gin.Context) *serialize.Response {
 	addr := ctx.Query("email")
 	if addr == "" {

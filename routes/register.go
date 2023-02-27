@@ -7,27 +7,29 @@ import (
 )
 
 func Register(engine *gin.Engine) {
+	authGroup := engine.Group("/auth")
 	userController := controller.NewUserController()
 	{
-		engine.POST("/login", Decorate(userController.Login))
-		engine.GET("/uname_available", Decorate(userController.CheckUsernameAvailable))
-		engine.POST("/register", Decorate(userController.Register))
-		engine.GET("/validate_code", Decorate(userController.GetEmailValidateCode))
+		authGroup.POST("/login", Decorate(userController.Login))
+		authGroup.GET("/username/check", Decorate(userController.CheckUsernameAvailable))
+		authGroup.POST("/register", Decorate(userController.Register))
+		authGroup.GET("/emailCode", Decorate(userController.GetEmailValidateCode))
 	}
+
 	apiGroup := engine.Group("/api", middleware.Auth())
 	tmplController := controller.NewSpaceTmplController()
 	{
-		apiGroup.GET("/tmpls", Decorate(tmplController.SpaceTmpls))
-		apiGroup.GET("/specs", Decorate(tmplController.SpaceSpecs))
+		apiGroup.GET("/template/list", Decorate(tmplController.SpaceTmpls))
+		apiGroup.GET("/spec/list", Decorate(tmplController.SpaceSpecs))
 	}
 	spaceController := controller.NewCloudCodeController()
 	{
-		apiGroup.GET("/spaces", Decorate(spaceController.ListSpace))
-		apiGroup.DELETE("/space", Decorate(spaceController.DeleteSpace))
-		apiGroup.POST("/space", Decorate(spaceController.CreateSpace))
-		apiGroup.POST("/space_cas", Decorate(spaceController.CreateSpaceAndStart))
-		apiGroup.PUT("/space_start", Decorate(spaceController.StartSpace))
-		apiGroup.PUT("/space_stop", Decorate(spaceController.StopSpace))
-		apiGroup.POST("/space_name", Decorate(spaceController.ModifySpaceName))
+		apiGroup.GET("/workspace/list", Decorate(spaceController.ListSpace))
+		apiGroup.DELETE("/workspace", Decorate(spaceController.DeleteSpace))
+		apiGroup.POST("/workspace", Decorate(spaceController.CreateSpace))
+		apiGroup.POST("/workspace/cas", Decorate(spaceController.CreateSpaceAndStart))
+		apiGroup.PUT("/workspace/start", Decorate(spaceController.StartSpace))
+		apiGroup.PUT("/workspace/stop", Decorate(spaceController.StopSpace))
+		apiGroup.PUT("/workspace/name", Decorate(spaceController.ModifySpaceName))
 	}
 }
