@@ -13,6 +13,8 @@ import (
 	"github.com/mangohow/cloud-ide-webserver/pkg/logger"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"gopkg.in/mgo.v2/bson"
 	"strconv"
 	"strings"
@@ -52,6 +54,9 @@ var (
 	ErrReachMaxSpaceCount = errors.New("reach max space count")
 	ErrSpaceCreate        = errors.New("space create failed")
 	ErrSpaceStart         = errors.New("space start failed")
+	ErrSpaceAlreadyExist  = errors.New("space already exist")
+	ErrSpaceNotFound      = errors.New("space not found")
+	ErrResourceExhausted  = errors.New("no adequate resource are available")
 )
 
 // CreateWorkspace 创建云工作空间, 只涉及数据库操作
@@ -135,7 +140,7 @@ func (c *CloudCodeService) CreateAndStartWorkspace(req *reqtype.SpaceCreateOptio
 	return c.startWorkspace(space, uid, c.rpc.CreateSpace)
 }
 
-type StartFunc func(ctx context.Context, in *pb.PodInfo, opts ...grpc.CallOption) (*pb.PodSpaceInfo, error)
+type StartFunc func(ctx context.Context, in *pb.WorkspaceInfo, opts ...grpc.CallOption) (*pb.WorkspaceRunningInfo, error)
 
 // startWorkspace 启动工作空间
 func (c *CloudCodeService) startWorkspace(space *model.Space, uid string, startFunc StartFunc) (*model.Space, error) {
@@ -148,7 +153,7 @@ func (c *CloudCodeService) startWorkspace(space *model.Space, uid string, startF
 
 	// 2、生成Pod信息
 	podName := c.generatePodName(space.Sid, uid)
-	pod := pb.PodInfo{
+	pod := pb.WorkspaceInfo{
 		Name:      podName,
 		Namespace: CloudCodeNamespace,
 		Image:     tmpl.Image,
@@ -160,59 +165,69 @@ func (c *CloudCodeService) startWorkspace(space *model.Space, uid string, startF
 		},
 	}
 
-	// 3、请求k8s controller创建云空间
-	// 设置一分钟的超时时间
-	timeout, cancelFunc := context.WithTimeout(context.Background(), time.Minute)
-	defer cancelFunc()
-	spaceInfo, err := startFunc(timeout, &pod)
-	switch err {
-	// PVC创建失败,也就意味着工作空间还没有启动一次
-	case ErrCreatePVC:
-		return nil, ErrSpaceStart
-	// 已经创建过PVC,但是Pod启动失败
-	case ErrCreatePod:
-		// 如果是第一次启动,PVC创建成功,但是Pod创建失败,需要修改数据库中的状态信息
-		if space.Status == model.SpaceStatusUncreated {
-			// 更新数据库
-			err = c.dao.UpdateStatusById(space.Id, model.SpaceStatusAvailable)
-			if err != nil {
-				c.logger.Warnf("update space status error:%v", err)
+	var retErr error
+loop:
+	for i := 0; i < 1; i++ {
+		// 3、请求k8s controller创建云空间
+		// 设置一分钟的超时时间
+		timeout, cancelFunc := context.WithTimeout(context.Background(), time.Minute)
+		defer cancelFunc()
+		spaceInfo, err := startFunc(timeout, &pod)
+		if err != nil {
+			s, ok := status.FromError(err)
+			if !ok {
+				return nil, err
+			}
+
+			switch s.Code() {
+			// 创建工作空间时,工作空间已存在,修改数据库中的status
+			case codes.AlreadyExists:
+				retErr = ErrSpaceAlreadyExist
+				break loop
+
+			// 启动工作空间时,工作空间不存在
+			case codes.NotFound:
+				return nil, ErrSpaceNotFound
+
+			// 资源耗尽,无法启动
+			case codes.ResourceExhausted:
+				return nil, ErrResourceExhausted
+			case codes.Unknown:
+				c.logger.Errorf("rpc start space error:%v", err)
+				return nil, ErrSpaceStart
 			}
 		}
-		return nil, ErrSpaceStart
-	}
 
-	if err != nil {
-		c.logger.Warnf("rpc start space error:%v", err)
-		return nil, ErrSpaceStart
-	}
+		// 访问路径为  http://domain/ws/uid/...   ws: workspace
+		// 4、将相关信息保存到redis
+		host := spaceInfo.Ip + ":" + strconv.Itoa(int(spaceInfo.Port))
+		err = rdis.AddRunningSpace(uid, &model.RunningSpace{
+			Sid:  space.Sid,
+			Host: host,
+		})
+		if err != nil {
+			c.logger.Errorf("add pod info to redis error, err:%v", err)
+			return nil, ErrSpaceStart
+		}
 
-	// 访问路径为  http://domain/ws/uid/...   ws: workspace
-	// 4、将相关信息保存到redis
-	host := spaceInfo.Ip + ":" + strconv.Itoa(int(spaceInfo.Port))
-	err = rdis.AddRunningSpace(uid, &model.RunningSpace{
-		Sid:  space.Sid,
-		Host: host,
-	})
-	if err != nil {
-		c.logger.Errorf("add pod info to redis error, err:%v", err)
-		return nil, ErrSpaceStart
+		space.RunningStatus = model.RunningStatusRunning
 	}
-
-	space.RunningStatus = model.RunningStatusRunning
 
 	// 5、修改数据库中的状态信息
 	if space.Status == model.SpaceStatusUncreated {
 		// 更新数据库
-		err = c.dao.UpdateStatusById(space.Id, model.SpaceStatusAvailable)
+		err := c.dao.UpdateStatusById(space.Id, model.SpaceStatusAvailable)
 		if err != nil {
 			c.logger.Warnf("update space status error:%v", err)
 		}
 	}
 
+	if retErr != nil {
+		return nil, retErr
+	}
+
 	return space, nil
 }
-
 
 var (
 	ErrWorkSpaceIsRunning    = errors.New("workspace is running")

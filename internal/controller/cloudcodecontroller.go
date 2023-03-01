@@ -116,6 +116,10 @@ func (c *CloudCodeController) CreateSpaceAndStart(ctx *gin.Context) *serialize.R
 	case service.ErrReqParamInvalid:
 		ctx.Status(http.StatusBadRequest)
 		return nil
+	case service.ErrSpaceAlreadyExist:
+		return serialize.NewResponseOKND(code.SpaceAlreadyExist)
+	case service.ErrResourceExhausted:
+		return serialize.NewResponseOKND(code.ResourceExhausted)
 	}
 
 	if err != nil {
@@ -155,6 +159,8 @@ func (c *CloudCodeController) StartSpace(ctx *gin.Context) *serialize.Response {
 		return serialize.NewResponseOKND(code.SpaceStartFailed)
 	case service.ErrOtherSpaceIsRunning:
 		return serialize.NewResponseOKND(code.SpaceOtherSpaceIsRunning)
+	case service.ErrSpaceNotFound:
+		return serialize.NewResponseOKND(code.SpaceNotFound)
 	}
 
 	if err != nil {

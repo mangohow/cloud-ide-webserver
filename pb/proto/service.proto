@@ -4,19 +4,21 @@ package pb;
 
 option go_package = "./;pb";
 
-
+// 工作空间的资源限制
 message ResourceLimit {
   string cpu = 1;
   string Memory = 2;
   string Storage = 3;
 }
 
-message PodInfo {
+// 工作空间信息
+message WorkspaceInfo {
   string name = 1;
   string namespace = 2;
   string image = 3;
-  uint32 port = 4;
-  ResourceLimit resourceLimit = 5;
+  int32 port = 4;
+  string volumeMountPath = 5;
+  ResourceLimit resourceLimit = 6;
 }
 
 message Response {
@@ -29,12 +31,14 @@ message QueryOption {
   string namespace = 2;
 }
 
-message PodStatus {
+// 工作空间的状态
+message WorkspaceStatus {
   int32 status = 1;
   string message = 2;
 }
 
-message PodSpaceInfo {
+// 工作空间运行信息
+message WorkspaceRunningInfo {
   string nodeName = 1;
   string ip = 2;
   int32 port = 3;
@@ -42,15 +46,15 @@ message PodSpaceInfo {
 
 service CloudIdeService {
   // 创建云IDE空间并等待Pod状态变为Running,第一次创建,需要挂载存储卷
-  rpc createSpace(PodInfo) returns (PodSpaceInfo);
+  rpc createSpace(WorkspaceInfo) returns (WorkspaceRunningInfo);
   // 启动(创建)云IDE空间,非第一次创建,无需挂载存储卷,使用之前的存储卷
-  rpc startSpace(PodInfo) returns (PodSpaceInfo);
+  rpc startSpace(WorkspaceInfo) returns (WorkspaceRunningInfo);
   // 删除云IDE空间,需要删除存储卷
   rpc deleteSpace(QueryOption) returns (Response);
   // 停止(删除)云工作空间,无需删除存储卷
   rpc stopSpace(QueryOption) returns (Response);
   // 获取Pod运行状态
-  rpc getPodSpaceStatus(QueryOption) returns (PodStatus);
+  rpc getPodSpaceStatus(QueryOption) returns (WorkspaceStatus);
   // 获取云IDE空间Pod的信息
-  rpc getPodSpaceInfo(QueryOption) returns (PodSpaceInfo);
+  rpc getPodSpaceInfo(QueryOption) returns (WorkspaceRunningInfo);
 }
