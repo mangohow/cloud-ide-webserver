@@ -253,17 +253,16 @@ func (c *CloudCodeService) DeleteWorkspace(id uint32, uid string) error {
 		return ErrWorkSpaceIsRunning
 	}
 
-	// 2、通知controller删除该workspace联的资源,如果该工作空间没有启动过,就不需要
-	if space.Status != model.SpaceStatusUncreated {
-		ctx, cancelFunc := context.WithTimeout(context.Background(), time.Second*30)
-		defer cancelFunc()
-		name := c.generatePodName(space.Sid, uid)
-		_, err = c.rpc.DeleteSpace(ctx, &pb.QueryOption{Name: name, Namespace: CloudCodeNamespace})
-		if err != nil {
-			c.logger.Warnf("delete workspace err:%v", err)
-			return err
-		}
+	// 2、通知controller删除该workspace关联的资源
+	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Second*30)
+	defer cancelFunc()
+	name := c.generatePodName(space.Sid, uid)
+	_, err = c.rpc.DeleteSpace(ctx, &pb.QueryOption{Name: name, Namespace: CloudCodeNamespace})
+	if err != nil {
+		c.logger.Warnf("delete workspace err:%v", err)
+		return err
 	}
+
 
 	// 3、从mysql中删除记录
 	return c.dao.DeleteSpaceById(id)
