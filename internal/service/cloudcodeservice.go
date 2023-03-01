@@ -158,6 +158,7 @@ func (c *CloudCodeService) startWorkspace(space *model.Space, uid string, startF
 		Namespace: CloudCodeNamespace,
 		Image:     tmpl.Image,
 		Port:      DefaultPodPort,
+		VolumeMountPath: "/user_data/",
 		ResourceLimit: &pb.ResourceLimit{
 			Cpu:     space.Spec.CpuSpec,
 			Memory:  space.Spec.MemSpec,
